@@ -1,23 +1,25 @@
+
 on:
   push:
     branches:
-      - main
+    - main
 
 permissions:
-  id-token: write
-  contents: read
+      id-token: write
+      contents: read
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
 
       - name: Login via Az module
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: dc85ab4f-ce39-4626-81da-ec4ebced7715
+          tenant-id: e4e34038-ea1f-4882-b6e8-ccd776459ca0
+          subscription-id: cd80669d-c886-455a-b108-8299fac678e3
+          enable-AzPSSession: true 
 
       - name: data-factory-deploy
         uses: Azure/data-factory-deploy-action@v1.2.0
@@ -27,4 +29,3 @@ jobs:
           armTemplateFile: testadfbytej/ARMTemplateForFactory.json
           armTemplateParametersFile: testadfbytej/ARMTemplateParametersForFactory.json
           additionalParameters: 'factoryName=prodadfbytej'
-
